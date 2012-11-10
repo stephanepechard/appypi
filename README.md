@@ -1,27 +1,22 @@
-.. _index-label:
-
 appypi: sandboxing apps from Pypi packages
 ==========================================
-**appypi** is a terminal-based `Python Package Index`_ package manager.
+**appypi** is a terminal-based
+[Python Package Index](http://pypi.python.org/pypi) package manager.
 Each app installed through appypi is sandboxed in an individual virtualenv
 and usable from the user space. No root access is required to install an app.
-appypi in **NOT** a replacement for pip_ or easy_install_.
+appypi in **NOT** a replacement for [pip](http://www.pip-installer.org/)
+or [easy_install](http://peak.telecommunity.com/DevCenter/EasyInstall).
 Actually, it uses pip intensively to manage package installations.
 
 appypi creates launchers into the user ~/bin directory. These launchers mimic
 the package behavior in terms of what commands can be called. For example,
 appypi will create a *django-admin.py* launcher when installing the
-django_ package, and a *fab* launcher when installing the Fabric_ package.
+[django](http://djangoproject.com/) package, and a *fab* launcher
+when installing the [Fabric](http://fabfile.org/) package.
 This way, you can use the package as if it was installed with pip directly.
 
 appypi won't install a package if it finds it in your path already.
 It is your duty to take care of these external installations before using appypi.
-
-.. _`Python Package Index`: http://pypi.python.org/pypi
-.. _pip: http://www.pip-installer.org/
-.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
-.. _Fabric: http://fabfile.org/
-.. _django: http://djangoproject.com/
 
 
 Installing a package::
@@ -46,13 +41,3 @@ Removing a package::
 
     Do you want to continue? [y/n]y
     Package Django has been removed.
-
-
-
-.. toctree::
-    :maxdepth: 2
-
-    install
-    usage
-    technical
-    changelog
