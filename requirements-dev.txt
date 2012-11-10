@@ -1,0 +1,9 @@
+blessings
+sqlalchemy
+pip-tools
+fabric
+nose
+coverage
+ipdb
+yolk
+sphinx

@@ -1,0 +1,8 @@
+#!/bin/bash
+$header
+
+# Put myself in the virtual environment.
+source "$activate"
+
+# Launch the program as it should be.
+$binfile "$@"

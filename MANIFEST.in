@@ -1,0 +1,10 @@
+include CHANGES.txt
+include LICENSE.txt
+include MANIFEST.in
+include README.txt
+recursive-include bin *
+recursive-include docs *
+recursive-include appypi *
+recursive-include tests *
+global-exclude *.pyc
+global-exclude *.pyo

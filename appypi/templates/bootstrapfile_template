@@ -1,0 +1,10 @@
+#!/bin/bash
+export VIRTUALENV_DIRECTORY=$venv
+
+if [ ! -d "$VIRTUALENV_DIRECTORY" ]; then
+    virtualenv -q $VIRTUALENV_DIRECTORY &&
+    source $VIRTUALENV_DIRECTORY/bin/activate &&
+    pip install -q --no-install --use-mirrors -I --download=$cache_dir $package &&
+    pip install -q --find-links=file://$cache_dir --no-index --index-url=file:///dev/null $package &&
+    pip freeze > freeze.txt
+fi
