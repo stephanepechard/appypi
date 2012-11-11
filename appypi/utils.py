@@ -99,20 +99,21 @@ def delete_file(full_path):
 def remove_launchers():
     """ Erase all files detected as launchers. appypi may miss some if
         the user modified them at some point. """
-    binfiles = os.listdir(settings.BIN_DIR) # list everything in bin dir
-    for binfile in binfiles:
-        path = os.path.join(settings.BIN_DIR, binfile) # full path
-        if os.path.exists(path) and os.path.isfile(path):
-            to_remove = False
-            with open(path) as pathfile:
-                # look for appypi-specific line
-                for line in pathfile.readlines():
-                    if line == settings.BIN_HEADER + '\n':
-                        to_remove = True
-                        break
+    if os.path.exists(settings.BIN_DIR):
+        binfiles = os.listdir(settings.BIN_DIR) # list everything in bin dir
+        for binfile in binfiles:
+            path = os.path.join(settings.BIN_DIR, binfile) # full path
+            if os.path.exists(path) and os.path.isfile(path):
+                to_remove = False
+                with open(path) as pathfile:
+                    # look for appypi-specific line
+                    for line in pathfile.readlines():
+                        if line == settings.BIN_HEADER + '\n':
+                            to_remove = True
+                            break
 
-            if to_remove:
-                delete_file(path) # remove the file
+                if to_remove:
+                    delete_file(path) # remove the file
 
 
 
