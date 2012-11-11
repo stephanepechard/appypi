@@ -4,7 +4,7 @@ python:
 - "2.7"
 - "3.2"
 # command to install dependencies
-install: pip install -r requirements-dev.txt && fab install
+install: pip install -r requirements-dev.txt && fab reinstall
 # command to run tests
 script: fab tests
 
