@@ -29,9 +29,10 @@ def create_templated_file(target, template, substitutes):
     """ Create a file from a template, based on a substitutes dictionary. """
     creation = False
     try:
-        with open(target, 'w') as dst, open(template, 'r') as src:
-            line = Template(src.read())
-            dst.write(line.safe_substitute(substitutes))
+        with open(target, 'w') as dst:
+            with open(template, 'r') as src:
+                line = Template(src.read())
+                dst.write(line.safe_substitute(substitutes))
         creation = True
     except IOError:
         creation = False
