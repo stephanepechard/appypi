@@ -1,7 +1,7 @@
 include CHANGES.txt
 include LICENSE.txt
 include MANIFEST.in
-include README.txt
+include README.md
 recursive-include bin *
 recursive-include docs *
 recursive-include appypi *
