@@ -74,3 +74,8 @@ def destroy():
     local("rm -rf ~/.appypi")
     remove_launchers()
 
+
+def upload():
+    """ Upload to Pypi. """
+    local("python setup.py sdist upload")
+
