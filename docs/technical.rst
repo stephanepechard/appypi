@@ -3,6 +3,42 @@
 Some technical details
 ======================
 
+Commands
+--------
+You may have noticed that appypi commands were almost the same as in
+aptitude_, the Debian_ packages manager. It is not done unpurposely.
+Actually, you can find the same `install`, `remove`, `update` and `upgrade`
+in aptitude. The `list` command is not available in aptitude but in dpkg_.
+The `show` command is not available in aptitude but in apt-get_. 
+
+.. _aptitude: http://packages.debian.org/stable/main/aptitude
+.. _Debian: http://debian.org/
+.. _dpkg: http://packages.debian.org/stable/main/dpkg
+.. _apt-get: http://packages.debian.org/stable/main/apt
+
+
+What does appypi create on your disk?
+-------------------------------------
+Except for the launchers, everything appypi will create on your disk is confined
+to the `.appypi` directory.
+
+Global directory
+^^^^^^^^^^^^^^^^
+That directory contains all files and directories appypi need to work properly:
+ * the appypi database (SQLite format) ;
+ * the Pypi packages list dump file ;
+ * the appypi cache directory ;
+ * for each installed app, a directory containing the `bootstrap` file, the current
+   freeze state of the app virtualenv put in the `freeze.txt` and the virtualenv
+   in itself put in the `venv` directory.
+
+Launchers
+^^^^^^^^^
+For each app installed, any launchable script located in the package is translated
+by appypi as a launchable script. Any of these file is situated in the user `bin`
+directory. It creates it if it does not exist.
+
+
 Caches
 ------
 
