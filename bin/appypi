@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""" Script launching the appypi main function. """
+
+from appypi.cmdline import execute
+execute()
