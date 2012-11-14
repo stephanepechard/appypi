@@ -2,7 +2,8 @@
 
 appypi: sandboxing apps from Pypi packages
 ==========================================
-**appypi** is a terminal-based `Python Package Index`_ package manager.
+**appypi** is a terminal-based [Python Package
+Index](http://pypi.python.org/pypi) package manager.
 Each app installed through appypi is sandboxed in an individual virtualenv
 and usable from the user space. No root access is required to install an app.
 appypi in **NOT** a replacement for pip_ or easy_install_.
