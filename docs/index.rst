@@ -2,19 +2,19 @@
 
 appypi: sandboxing apps from Pypi packages
 ==========================================
-**appypi** is a terminal-based [Python Package
-Index](http://pypi.python.org/pypi) package manager.
+**appypi** is a terminal-based `Python Package
+Index <http://pypi.python.org/pypi>`_ package manager.
 Each app installed through appypi is sandboxed in an individual virtualenv
 and usable from the user space. No root access is required to install an app.
-appypi in **NOT** a replacement for [pip](http://www.pip-installer.org/)
-or [easy_install](http://peak.telecommunity.com/DevCenter/EasyInstall).
+appypi in **NOT** a replacement for `pip <http://www.pip-installer.org/>`_
+or `easy_install <http://peak.telecommunity.com/DevCenter/EasyInstall>`_.
 Actually, it uses pip intensively to manage package installations.
 
 appypi creates launchers into the user ~/bin directory. These launchers mimic
 the package behavior in terms of what commands can be called. For example,
 appypi will create a *django-admin.py* launcher when installing the
-[django](http://djangoproject.com/) package, and a *fab* launcher when
-installing the [Fabric](http://fabfile.org/) package.
+`django <http://djangoproject.com/>`_ package, and a *fab* launcher when
+installing the `Fabric <http://fabfile.org/>`_ package.
 This way, you can use the package as if it was installed with pip directly.
 
 appypi won't install a package if it finds it in your path already. It is

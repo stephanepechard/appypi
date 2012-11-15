@@ -18,6 +18,7 @@ setup(name='appypi',
       license='GNU General Public License v3 (GPLv3)',
       long_description=open(join(dirname(__file__), 'README.md')).read(),
       scripts=['bin/appypi'],
+      install_requires=['blessings', 'fabric', 'sqlalchemy'], 
       tests_require=['nose'],
       include_package_data=True,
       classifiers=[

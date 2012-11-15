@@ -64,7 +64,7 @@ Show information about a package
 
 This prints details found on Pypi about the installed version of the package.
 The full description is printed, so it may be a bit verbose.
-For example, for the Projy_ package:
+For example, for the `Projy <http://pypi.python.org/pypi/Projy/0.2>`_ package:
 
 .. code-block:: python
     :linenos:
@@ -203,9 +203,6 @@ For example, for the Projy_ package:
     See the official doc for more details on created files into these
     templates. Soon to come, more templates around Django. Of course, 
     anyone can propose some templates, they'll be integrated into Projy.
-
-
-.. _Projy: http://pypi.python.org/pypi/Projy/0.2
 
 
 List installed packages

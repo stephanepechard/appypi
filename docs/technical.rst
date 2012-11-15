@@ -6,15 +6,13 @@ Some technical details
 Commands
 --------
 You may have noticed that appypi commands were almost the same as in
-aptitude_, the Debian_ packages manager. It is not done unpurposely.
+`aptitude <http://packages.debian.org/stable/main/aptitude>`_ , the
+`Debian <http://debian.org>`_ packages manager. It is not done unpurposely.
 Actually, you can find the same `install`, `remove`, `update` and `upgrade`
-in aptitude. The `list` command is not available in aptitude but in dpkg_.
-The `show` command is not available in aptitude but in apt-get_. 
-
-.. _aptitude: http://packages.debian.org/stable/main/aptitude
-.. _Debian: http://debian.org/
-.. _dpkg: http://packages.debian.org/stable/main/dpkg
-.. _apt-get: http://packages.debian.org/stable/main/apt
+in aptitude. The `list` command is not available in aptitude but in
+`dpkg <http://packages.debian.org/stable/main/dpkg>`_
+The `show` command is not available in aptitude but in
+`apt-get <http://packages.debian.org/stable/main/apt>`_. 
 
 
 What does appypi create on your disk?
@@ -47,7 +45,8 @@ Pypi packages list
 You don't want to query the list of **ALL** Pypi packages at the installation
 of any package. That's why appypi uses a cache of this Pypi list, to be fast
 at installing several packages in a short interval. This cache is written
-on disk in a single file, using `Python's pickle functionnalities`_.
+on disk in a single file, using `Python's pickle functionnalitie
+<http://docs.python.org/2/library/pickle.html>`_
 
 Of course, Pypi packages list grows over time, and appypi should keep it up
 to date. It is done automatically if the list file is more than 7 days old.
@@ -56,8 +55,6 @@ reasonable. If this does not suit you, you can manually trigger the update
 with a simple::
 
     $ appypi update
-
-.. _`Python's pickle functionnalities`: http://docs.python.org/2/library/pickle.html
 
 
 Packages cache
