@@ -40,11 +40,6 @@ def install():
     local('rm -rf build')
 
 
-def upload_pypi():
-    """ Upload package to pypi. """
-    local("python setup.py sdist register upload")
-
-
 def tests():
     """ Launch tests. """
     local("rm -rf /tmp/appypi_tmp")

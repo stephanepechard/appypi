@@ -3,6 +3,11 @@
 Changelog
 =========
 
+0.1.3 (2012-11-15)
+------------------
+* fix README file for official release
+
+
 0.1.2 (2012-11-15)
 ------------------
 * fix setup.py and bootstrap, better documentation
