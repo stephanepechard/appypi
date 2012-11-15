@@ -21,7 +21,7 @@ appypi won't install a package if it finds it in your path already. It is
 your duty to take care of these external installations before using appypi.
 
 
-Installing a package:
+Installing a package::
 
     $ appypi install django
     Looking for django...
@@ -29,12 +29,12 @@ Installing a package:
     Installing...
     Install successful!
 
-Upgrading a package:
+Upgrading a package::
 
     $ appypi upgrade django
     Upgrading: Django (1.3 => 1.4.2)
 
-Removing a package:
+Removing a package::
 
     $ appypi remove django
     These packages will be REMOVED:
