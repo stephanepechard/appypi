@@ -3,7 +3,7 @@
 Changelog
 =========
 
-0.1.1 (2012-11-11)
+0.1.2 (2012-11-15)
 ------------------
 * fix setup.py and bootstrap, better documentation
 
