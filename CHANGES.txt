@@ -5,6 +5,11 @@ Changelog
 
 0.1.1 (2012-11-11)
 ------------------
+* fix setup.py and bootstrap, better documentation
+
+
+0.1.1 (2012-11-11)
+------------------
 * fix erroneous MANIFEST
 
 
