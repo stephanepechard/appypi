@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Appypi by stephanepechard</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Appypi</h1>
+        <p>Sandboxing apps from Pypi packages</p>
+
+        <p class="view"><a href="https://github.com/stephanepechard/appypi">View the Project on GitHub <small>stephanepechard/appypi</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/stephanepechard/appypi/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/stephanepechard/appypi/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/stephanepechard/appypi">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>appypi: sandboxing apps from Pypi packages</h3>
+
+<h1></h1>
+
+<p><strong>appypi</strong> is a terminal-based
+<a href="http://pypi.python.org/pypi">Python Package Index</a> package manager.
+Each app installed through appypi is sandboxed in an individual virtualenv
+and usable from the user space. No root access is required to install an app.
+appypi in <strong>NOT</strong> a replacement for <a href="http://www.pip-installer.org/">pip</a>
+or <a href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a>.
+Actually, it uses pip intensively to manage package installations.</p>
+
+<p>appypi creates launchers into the user ~/bin directory. These launchers mimic
+the package behavior in terms of what commands can be called. For example,
+appypi will create a <em>django-admin.py</em> launcher when installing the
+<a href="http://djangoproject.com/">django</a> package, and a <em>fab</em> launcher
+when installing the <a href="http://fabfile.org/">Fabric</a> package.
+This way, you can use the package as if it was installed with pip directly.</p>
+
+<p>appypi won't install a package if it finds it in your path already.
+It is your duty to take care of these external installations before using appypi.</p>
+
+<p>Installing a package:</p>
+
+<pre><code>$ appypi install django
+Looking for django...
+Found Django version 1.4.2
+Installing...
+Install successful!
+</code></pre>
+
+<p>Upgrading a package:</p>
+
+<pre><code>$ appypi upgrade django
+Upgrading: Django (1.3 =&gt; 1.4.2)
+</code></pre>
+
+<p>Removing a package:</p>
+
+<pre><code>$ appypi remove django
+These packages will be REMOVED:
+
+    Django
+
+Do you want to continue? [y/n]y
+Package Django has been removed.
+</code></pre>
+
+<h2>Build status on travis-ci.org</h2>
+
+<p><a href="https://travis-ci.org/stephanepechard/appypi"><img src="https://travis-ci.org/stephanepechard/appypi.png" alt="Build Status"></a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/stephanepechard">stephanepechard</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
