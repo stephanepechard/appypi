@@ -10,7 +10,8 @@ Meta-style
 ----------
 As appypi is an app installer, you can use it to install itself.
 This way, your installation is consistent and you keep everything
-in the dedicated database. Here is a little script to do this in one shot::
+in the dedicated database. Here is a little script to do this in one shot.
+You need at least pip version 0.8.1 to do that::
 
 	virtualenv -q /tmp/appypi-venv &&
 	source /tmp/appypi-venv/bin/activate &&

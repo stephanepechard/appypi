@@ -74,3 +74,9 @@ def upload():
     """ Upload to Pypi. """
     local("python setup.py sdist upload")
 
+
+def md2rst(in_file, out_file):
+    """ Generate reStructuredText from Makrdown. """
+    local("pandoc -f markdown -t rst %s -o %s" % (in_file, out_file))
+
+
