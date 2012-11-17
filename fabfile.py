@@ -44,7 +44,7 @@ def tests():
     """ Launch tests. """
     local("rm -rf /tmp/appypi_tmp")
     remove_launchers()
-    
+
     local("nosetests -v --with-coverage --cover-package appypi tests.test_ApplicationController tests.test_models tests.test_utils")
     local("echo 'y' | nosetests -v --with-coverage --cover-package appypi tests.test_manual:test_remove")
     local("echo 'n' | nosetests -v --with-coverage --cover-package appypi tests.test_manual:test_remove_not_confirmed")
@@ -75,8 +75,11 @@ def upload():
     local("python setup.py sdist upload")
 
 
-def md2rst(in_file, out_file):
+def md2rst(in_file, out_file, pipe):
     """ Generate reStructuredText from Makrdown. """
-    local("pandoc -f markdown -t rst %s -o %s" % (in_file, out_file))
+    local("pandoc -f markdown -t rst %s %s > %s" % (in_file, pipe, out_file))
 
+
+def readme():
+    md2rst('README.md', 'README.txt', '| head -n -7')
 

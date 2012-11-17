@@ -2,23 +2,22 @@
 """ appypi setup.py script """
 
 # appypi
-from appypi import __version__ as VERSION
+from appypi import __version__
 # system
-from distutils.core import setup
+from setuptools import setup
 from os.path import join, dirname
 
 
 setup(name='appypi',
-      version=VERSION,
+      version=__version__,
       description='appypi: sandboxing apps from Pypi packages',
       author='Stéphane Péchard',
       author_email='stephanepechard@gmail.com',
       packages=['appypi', 'tests'],
-      url='http://www.python.org/',
-      license='GNU General Public License v3 (GPLv3)',
-      long_description=open(join(dirname(__file__), 'README.txt')).read(),
+      url='http://stephanepechard.github.com/appypi',
+      long_description=open('README.txt').read(),
       scripts=['bin/appypi'],
-      install_requires=['blessings', 'fabric', 'sqlalchemy'], 
+      install_requires=['blessings', 'fabric', 'sqlalchemy'],
       tests_require=['nose'],
       include_package_data=True,
       classifiers=[

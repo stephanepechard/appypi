@@ -50,10 +50,3 @@ Removing a package:
     Do you want to continue? [y/n]y
     Package Django has been removed.
 
-Build status on travis-ci.org
------------------------------
-
-`|Build Status| <https://travis-ci.org/stephanepechard/appypi>`_
-
-.. |Build
-Status| image:: https://travis-ci.org/stephanepechard/appypi.png
