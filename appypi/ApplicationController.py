@@ -8,7 +8,6 @@ import pickle
 import shutil
 import subprocess
 import sys
-import xmlrpclib
 from os.path import join
 # appypi
 from appypi import settings
@@ -16,55 +15,60 @@ from appypi.models import AppypiDatabase, Application
 from appypi.pypi import PypiInterface
 from appypi.TerminalView import TerminalView
 from appypi.utils import create_dir, create_templated_file, bash_file
-from appypi.utils import apps_in_path, delete_dir
+from appypi.utils import apps_in_path, delete_dir, is_binary
 
 
-class ApplicationController:
+class ApplicationController(object):
     """ Main controller to run appypi. """
 
-    def __init__(self, arguments):
+    def __init__(self, args):
         create_dir(settings.APPYPI_DIR)
         create_dir(settings.CACHE_DIR)
         self.app_model = None
-        self.arguments = arguments
         self.view = TerminalView()
         self.adb = AppypiDatabase()
         self.pypi = PypiInterface()
 
+        self.command = args['<command>'] if args['<command>'] else None
+        self.package = args['<package>'] if args['<package>'] else None
+        if args['--requirements']:
+            self.requirement = args['--requirements']
+        else:
+            self.requirement = None
 
     def run(self):
         """ Launch the app with user-given arguments. """
-        if self.arguments['<command>']:
-            command = self.arguments['<command>']
 
-            # without package list
-            if command == 'list':
-                self.list_apps()
-            elif command == 'update':
-                self.update()
-            elif command == 'upgrade':
-                self.upgrade()
+        # without package list
+        if self.command == 'list':
+            self.list_apps()
+        elif self.command == 'update':
+            self.update()
+        elif self.command == 'upgrade':
+            self.upgrade()
+        else:
+            packages = self.package
+            if packages:
+                if self.command == 'install':
+                    for package in packages:
+                        self.install(package)
+                elif self.command == 'remove':
+                    self.remove(packages)
+                elif self.command == 'show':
+                    for package in packages:
+                        self.show(package)
+                else:
+                    message = "Unknown command. Try 'install', " + \
+                              "'upgrade', 'remove', 'show', 'list' " + \
+                              "or 'update'."
+                    self.view.print_error_and_exit(message)
+
             else:
-                packages = self.arguments['<package>']
-                if packages:
-                    if command == 'install':
-                        for package in packages:
-                            self.install(package)
-                    elif command == 'remove':
-                        self.remove(packages)
-                    elif command == 'show':
-                        for package in packages:
-                            self.show(package)
-                    else:
-                        message = "Unknown command. Try 'install', " + \
-                                  "'upgrade', 'remove', 'show', 'list' " + \
-                                  "or 'update'."
-                        self.view.print_error_and_exit(message)
-
+                if self.requirement:
+                    self.install_req()
                 else:
                     message = "Please specify a package."
                     self.view.print_error_and_exit(message)
-
 
     def install(self, package):
         """ Install the app, based on the user-given name. """
@@ -94,20 +98,42 @@ class ApplicationController:
         self.create_app_dir()
         # create and source boostrap file ~/.appypi/<package>/bootstrap
         self.create_app_bootstrap()
-        # create launchers file into ~/bin (depends on what the package defines)
+        # create launchers file in ~/bin (depends on what the package defines)
         nb_launchers = self.create_launchers()
 
         if nb_launchers == 0:
-            message = "There's no launcher to be set for this package. " \
-                      "It is useless to install it through appypi, " \
-                      "as you wouldn't be able to use it. Mission aborted!"
-            # clean this mess and quit
-            delete_dir(self.app_model.app_dir)
-            self.view.print_error_and_exit(message)
+            if self.requirement:
+                message = "There's no launcher to be set for this package." \
+                          "appypi won't install it..."
+                self.view.print_info(message)
+            else:
+                message = "There's no launcher to be set for this package. " \
+                          "It is useless to install it through appypi, " \
+                          "as you wouldn't be able to use it. Mission aborted!"
+                # clean this mess and quit
+                delete_dir(self.app_model.app_dir)
+                self.view.print_error_and_exit(message)
         else:
             self.adb.add_app(self.app_model)
             self.view.print_info('Install successful!')
 
+    def install_req(self):
+        """ Install a list of package written in a file. """
+        req = self.requirement
+        try:
+            if not is_binary(req):
+                lines = None
+                with open(req, 'r') as req:
+                    lines = req.read()
+
+                for package in lines.split():
+                    self.install(package)
+            else:
+                message = "File {0} is not made of text!".format(req)
+                self.view.print_error_and_exit(message)
+        except IOError:
+            message = "Can't find file {0}".format(req)
+            self.view.print_error_and_exit(message)
 
     def get_package_list(self):
         """ Get list of Pypi packages from pypi website or local cache. """
@@ -123,7 +149,6 @@ class ApplicationController:
             self.pypi.update_package_list()
 
         return pickle.load(open(settings.PACKAGE_CACHE_FILE, 'r'))
-
 
     def find_package(self, package):
         """ Try to find the user-given package into pypi repository. """
@@ -159,13 +184,11 @@ class ApplicationController:
 
         return found
 
-
     def create_app_dir(self):
         """ Create the app directory. """
-        self.app_model.app_dir = join(settings.APPYPI_DIR, \
+        self.app_model.app_dir = join(settings.APPYPI_DIR,
                                               self.app_model.name)
         create_dir(self.app_model.app_dir)
-
 
     def create_app_bootstrap(self):
         """ Create the bootstrap file. """
@@ -185,7 +208,6 @@ class ApplicationController:
         if not bash_file(bootstrap):
             message = "Package install failed!"
             self.view.print_error_and_exit(message)
-
 
     def create_launchers(self):
         """ Create the launcher files. """
@@ -207,7 +229,6 @@ class ApplicationController:
                 self.app_model.add_binfile(binfile)
 
         return number_of_binfile
-
 
     def check_launcher(self, binfile):
         """ Check if the launcher is installable. """
@@ -232,10 +253,9 @@ class ApplicationController:
             delete_dir(self.app_model.app_dir)
             self.view.print_error_and_exit(message)
 
-
     def create_launcher(self, binfile):
         """ Create one launcher file. """
-        create_dir(settings.BIN_DIR) # in case it's the first time
+        create_dir(settings.BIN_DIR)  # in case it's the first time
 
         launcher = join(settings.BIN_DIR, binfile)
         tmp = join(settings.TEMPLATE_DIR, settings.BINFILE_TEMPLATE)
@@ -250,8 +270,7 @@ class ApplicationController:
             message = "Can't create launcher file: {0}".format(launcher)
             self.view.print_error_and_exit(message)
 
-        os.chmod(launcher, 0755) # make it executable
-
+        os.chmod(launcher, 0755)  # make it executable
 
     def remove(self, packages):
         """ Remove some installed apps, based on the user-given names. """
@@ -273,7 +292,7 @@ class ApplicationController:
         for app in apps_to_remove:
             app_names.append(app.real_name)
 
-        self.view.print_info("\nThese packages will be REMOVED:\n\n\t{0}\n" \
+        self.view.print_info("\nThese packages will be REMOVED:\n\n\t{0}\n"
                             .format(" ".join(app_names)))
         cont = self.view.format_question('Do you want to continue? [y/n]')
         confirmation = raw_input(cont)
@@ -292,16 +311,16 @@ class ApplicationController:
             self.adb.remove_app(app_to_remove)
 
             # user message
-            message = "Package {0} has been removed.".format(app_to_remove.real_name)
+            message = "Package {0} has been removed." \
+                        .format(app_to_remove.real_name)
             self.view.print_info(message)
-
 
     def list_apps(self):
         """ List installed apps on screen. """
         packages = self.adb.installed_packages()
         nb_p = len(packages)
         message = "appypi - {0} installed package{1}" \
-                .format(nb_p, 's' if nb_p>1 else '')
+                .format(nb_p, 's' if nb_p > 1 else '')
         self.view.print_info(message)
         if not nb_p:
             return
@@ -314,7 +333,7 @@ class ApplicationController:
         max_len = max(max_len, len('Name'))
 
         # format output
-        separator = '-'*(max_len + 20)
+        separator = '-' * (max_len + 20)
         self.view.print_info(separator)
         message = "{0:{1}} - {2:7} - {3}" \
                 .format('Name', max_len, 'Version', 'Summary')
@@ -326,7 +345,6 @@ class ApplicationController:
                     .format(package.real_name, max_len,
                             version, package.summary)
             self.view.print_info(message)
-
 
     def upgrade_app(self, app_to_upgrade):
         """ Upgrade an app to the last version. """
@@ -345,7 +363,8 @@ class ApplicationController:
             self.view.print_info(message)
 
             # enter the app virtualenv
-            exe = join(app_to_upgrade.app_dir, 'venv', 'bin', 'activate_this.py')
+            exe = join(app_to_upgrade.app_dir,
+                       'venv', 'bin', 'activate_this.py')
             execfile(exe, dict(__file__=exe))
 
             # launch the upgrade
@@ -356,15 +375,15 @@ class ApplicationController:
             app_to_upgrade.installed_version = last_version
             self.adb.save()
 
-
     def upgrade_all(self):
+        """ Upgrade all installed apps to the last version. """
         apps = self.adb.installed_packages()
         for app in apps:
             self.upgrade_app(app)
 
-
     def upgrade(self):
-        packages = self.arguments['<package>']
+        """ Upgrade one or all app. """
+        packages = self.package
         if packages:
             for package in packages:
                 app_to_upgrade = self.adb.app_is_installed(package)
@@ -372,17 +391,18 @@ class ApplicationController:
                     self.upgrade_app(app_to_upgrade)
                 else:
                     message = "{0} is not installed.".format(package)
+                    self.view.print_info(message)
         else:
-            self.upgrade_all() # upgrade everything
-
+            self.upgrade_all()  # upgrade everything
 
     def update(self):
+        """ Update the local database. """
         message = "Updating local database..."
         self.view.print_info(message)
         self.pypi.update_package_list()
 
-
     def show(self, package):
+        """ Prints info about the given package. """
         app_to_show = self.adb.app_is_installed(package)
         if app_to_show:
 
@@ -408,4 +428,3 @@ class ApplicationController:
         else:
             message = "{0} is not installed.".format(package)
             self.view.print_error_and_exit(message)
-

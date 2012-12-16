@@ -12,7 +12,7 @@ Actually, you can find the same `install`, `remove`, `update` and `upgrade`
 in aptitude. The `list` command is not available in aptitude but in
 `dpkg <http://packages.debian.org/stable/main/dpkg>`_
 The `show` command is not available in aptitude but in
-`apt-get <http://packages.debian.org/stable/main/apt>`_. 
+`apt-get <http://packages.debian.org/stable/main/apt>`_.
 
 
 What does appypi create on your disk?
@@ -41,7 +41,7 @@ Caches
 ------
 
 Pypi packages list
-++++++++++++++++++
+^^^^^^^^^^^^^^^^^^
 You don't want to query the list of **ALL** Pypi packages at the installation
 of any package. That's why appypi uses a cache of this Pypi list, to be fast
 at installing several packages in a short interval. This cache is written
@@ -58,7 +58,7 @@ with a simple::
 
 
 Packages cache
-++++++++++++++
+^^^^^^^^^^^^^^
 appypi maintains its own local cache for Pypi packages. It may be redundant
 with your own pip cache if you set it already (and you should), but this way
 appypi is kept independent from pip. Then, each single package comes

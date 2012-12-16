@@ -14,7 +14,9 @@ def docopt_arguments():
         See https://github.com/docopt/docopt """
     doc = """appypi: sandboxing apps from pypi packages.
 
-    Usage: appypi <command> [<package>...]
+    Usage:
+           appypi <command> [<package>...]
+           appypi install --requirements=<requirements_file>
            appypi list
            appypi -h | --help
            appypi -v | --version
@@ -32,4 +34,3 @@ def execute():
     system_check()
     controller = ApplicationController(docopt_arguments())
     controller.run()
-

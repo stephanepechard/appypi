@@ -3,9 +3,7 @@
 
 # system
 import os
-import pickle
 import shutil
-import socket
 import subprocess
 from string import Template
 # appypi
@@ -47,7 +45,7 @@ def bash_file(file_path):
         path = os.path.dirname(os.path.realpath(file_path))
         os.chdir(path)
         try:
-            output = subprocess.check_call(["bash", file_path])
+            subprocess.check_call(["bash", file_path])
             success = True
         except subprocess.CalledProcessError:
             success = False
@@ -58,6 +56,7 @@ def bash_file(file_path):
 def apps_in_path(program):
     """ Return path of a command, or None if command is not found. """
     def is_exe(fpath):
+        """ Is this an executable file? """
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
     fpath, fname = os.path.split(program)
@@ -92,18 +91,19 @@ def system_check():
         view.print_error_and_exit(message)
 
 
-def delete_file(full_path):
-    if os.path.exists(full_path) and os.path.isfile(full_path):
-        os.remove(full_path)
+def delete_file(filepath):
+    """ Securely delete a file. """
+    if os.path.exists(filepath) and os.path.isfile(filepath):
+        os.remove(filepath)
 
 
 def remove_launchers():
     """ Erase all files detected as launchers. appypi may miss some if
         the user modified them at some point. """
     if os.path.exists(settings.BIN_DIR):
-        binfiles = os.listdir(settings.BIN_DIR) # list everything in bin dir
+        binfiles = os.listdir(settings.BIN_DIR)  # list everything in bin dir
         for binfile in binfiles:
-            path = os.path.join(settings.BIN_DIR, binfile) # full path
+            path = os.path.join(settings.BIN_DIR, binfile)  # full path
             if os.path.exists(path) and os.path.isfile(path):
                 to_remove = False
                 with open(path) as pathfile:
@@ -114,7 +114,12 @@ def remove_launchers():
                             break
 
                 if to_remove:
-                    delete_file(path) # remove the file
+                    delete_file(path)  # remove the file
 
 
-
+def is_binary(filepath):
+    """ Determine if a file is text or binary. """
+    charmap = map(chr, [7, 8, 9, 10, 12, 13, 27] + range(0x20, 0x100))
+    textchars = ''.join(charmap)
+    is_binary_string = lambda bytes: bool(bytes.translate(None, textchars))
+    is_binary_string(open(filepath).read(1024))

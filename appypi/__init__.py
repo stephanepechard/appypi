@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
 """ Common stuff. """
 
-__version__ = '0.1.4'
+# should be the last thing to be found in this file, as used in docs/donf.py
+__version__ = '0.2.0'

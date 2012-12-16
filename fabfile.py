@@ -45,9 +45,12 @@ def tests():
     local("rm -rf /tmp/appypi_tmp")
     remove_launchers()
 
-    local("nosetests -v --with-coverage --cover-package appypi tests.test_ApplicationController tests.test_models tests.test_utils")
-    local("echo 'y' | nosetests -v --with-coverage --cover-package appypi tests.test_manual:test_remove")
-    local("echo 'n' | nosetests -v --with-coverage --cover-package appypi tests.test_manual:test_remove_not_confirmed")
+    local("nosetests -v --with-coverage --cover-package appypi tests."
+          "test_ApplicationController tests.test_models tests.test_utils")
+    local("echo 'y' | nosetests -v --with-coverage --cover-package appypi "
+          "tests.test_manual:test_remove")
+    local("echo 'n' | nosetests -v --with-coverage --cover-package appypi "
+          "tests.test_manual:test_remove_not_confirmed")
 
     local("coverage html -d /tmp/coverage-appypi --omit='appypi/docopt.py'")
     local("coverage erase")
@@ -81,5 +84,5 @@ def md2rst(in_file, out_file, pipe):
 
 
 def readme():
+    """ Convert Markdown README file to reStructuredText README file. """
     md2rst('README.md', 'README.txt', '| head -n -7')
-

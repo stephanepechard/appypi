@@ -19,15 +19,15 @@ UNINSTALLABLE_PACKAGES = ['pip', 'python', 'virtualenv']
 
 # bootstrap
 BOOTSTRAP_NAME = 'bootstrap'
-BOOTSTRAP_SUBS = { 'package': None,
-                   'venv': 'venv',
-                   'cache_dir': CACHE_DIR }
+BOOTSTRAP_SUBS = {'package': None,
+                  'venv': 'venv',
+                  'cache_dir': CACHE_DIR}
 
 # launchers
 BIN_DIR = join(os.environ['HOME'], 'bin')
 ACTIVATE_FILE = 'venv/bin/activate'
 BIN_HEADER = "# appypi-installed application launcher, DO NOT EDIT!"
-LAUNCHER_SUBS = { 'activate': None, 'binfile': None, 'header': BIN_HEADER }
+LAUNCHER_SUBS = {'activate': None, 'binfile': None, 'header': BIN_HEADER}
 LAUNCHER_EXCLUDE_STARTS = ['activate', 'easy_install', 'pip', 'python']
 
 # templates

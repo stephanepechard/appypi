@@ -8,39 +8,42 @@ import subprocess
 import sys
 # appypi
 from appypi import settings
-from appypi.ApplicationController import ApplicationController
-from appypi.cmdline import docopt_arguments, execute
+from appypi.cmdline import execute
 from appypi.models import AppypiDatabase
 from appypi.utils import remove_launchers
 # nose
 from nose.tools import assert_equal
 from nose.tools import assert_not_equal
-from nose.tools import nottest
 from nose.tools import raises
 from nose.tools import with_setup
-from nose.plugins.capture import Capture
 
 
 # setups/teardowns
 def teardown_appypi_dir():
+    """ Remove launchers and delete test appypi directory. """
     remove_launchers()
     if os.path.exists(settings.APPYPI_DIR):
         shutil.rmtree(settings.APPYPI_DIR, True)
 
 
 def setup_appypi_dir():
+    """ First remove everything potentially already installed and
+        create anything needed. """
     teardown_appypi_dir()
     settings.APPYPI_DIR = os.path.join('/tmp', 'appypi_tmp')
-    settings.APPYPI_DB_PATH = os.path.join(settings.APPYPI_DIR, 'appypi.sqlite')
+    settings.APPYPI_DB_PATH = os.path.join(settings.APPYPI_DIR,
+                                           'appypi.sqlite')
     settings.CACHE_DIR = os.path.join(settings.APPYPI_DIR, 'appypi_cache')
-    settings.PACKAGE_CACHE_FILE = os.path.join(settings.APPYPI_DIR, 'appypi_package_cache.dump')
-    settings.BOOTSTRAP_SUBS = { 'package': None, 'venv': 'venv',
-                                'cache_dir': settings.CACHE_DIR }
+    settings.PACKAGE_CACHE_FILE = os.path.join(settings.APPYPI_DIR,
+                                               'appypi_package_cache.dump')
+    settings.BOOTSTRAP_SUBS = {'package': None, 'venv': 'venv',
+                               'cache_dir': settings.CACHE_DIR}
 
 
 # tests
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_install():
+    """ Test the install of a package. """
     sys.argv = ['appypi', 'install', 'projy']
     execute()
     bin_path = os.path.join(os.environ['HOME'], 'bin', 'projy')
@@ -51,6 +54,8 @@ def test_install():
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_list_and_show():
+    """ Test the install of a package, then list all installed packages,
+        then show the installed package information. """
     sys.argv = ['appypi', 'install', 'projy']
     execute()
     sys.argv = ['appypi', 'list']
@@ -75,53 +80,54 @@ def test_real_upgrade():
     execute()
 
     # enter the fabric virtualenv
-    exe = os.path.join(settings.APPYPI_DIR, 'fabric', 'venv', 'bin', 'activate_this.py')
+    exe = os.path.join(settings.APPYPI_DIR,
+                       'fabric', 'venv', 'bin', 'activate_this.py')
     execfile(exe, dict(__file__=exe))
     # launch the downgrade
     subprocess.call(['pip', '-q', 'install', 'fabric==1.4.0'])
     # change the database
-    db = AppypiDatabase()
-    app = db.app_is_installed('fabric')
+    dbase = AppypiDatabase()
+    app = dbase.app_is_installed('fabric')
     app.installed_version = '1.4.0'
-    db.save()
+    dbase.save()
 
     # run the update
     sys.argv = ['appypi', 'upgrade', 'fabric']
     execute()
     # test
-    app2 = db.app_is_installed('fabric')
+    app2 = dbase.app_is_installed('fabric')
     assert_not_equal(app2.installed_version, '1.4.0')
 
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
-def test_upgrade_uninstalled_package():
+def test_upgrade_uninstalled():
     sys.argv = ['appypi', 'upgrade', 'NOT_INSTALLED_PACKAGE']
     execute()
 
 
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
-def test_show_unknown_package():
+def test_show_unknown():
     sys.argv = ['appypi', 'show', 'NOT_INSTALLED_PACKAGE']
     execute()
 
 
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
-def test_remove_not_installed_package():
+def test_remove_not_installed():
     sys.argv = ['appypi', 'remove', 'projy']
     execute()
 
 
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
-def test_install_unknown_package():
+def test_install_unknown():
     sys.argv = ['appypi', 'install', 'NOT_INSTALLED_PACKAGE']
     execute()
 
 
 @raises(SystemExit)
-def test_install_without_package():
+def test_empty_install():
     sys.argv = ['appypi', 'install']
     execute()
 
@@ -132,31 +138,20 @@ def test_unknown_command():
     execute()
 
 
-def test_init():
-    arguments = {'--help': False, '--version': False,
-                 '<command>': 'install', '<package>': None, 'list': False}
-    controller = ApplicationController(arguments)
-    assert_equal(controller.arguments, arguments)
-    assert_not_equal(controller.view, None)
-
-
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_update():
     sys.argv = ['appypi', 'update']
     execute()
 
 
-#def setup_no_network():
-    #subprocess.call(['sudo', '/etc/init.d/networking', 'stop'])
+@raises(SystemExit)
+def test_unknown_requirement_file():
+    sys.argv = ['appypi', 'install', '--requirements=NOT_A_FILE']
+    execute()
 
 
-#def teardown_no_network():
-    #subprocess.call(['sudo', '/etc/init.d/networking', 'start'])
-
-
-#@with_setup(setup_no_network, teardown_no_network)
-#@raises(SystemExit)
-#def test_no_network():
-    #sys.argv = ['appypi', 'install', 'projy']
-    #controller = ApplicationController(docopt_arguments())
-    #controller.run()
+@with_setup(setup_appypi_dir, teardown_appypi_dir)
+def test_requirement_file():
+    sys.argv = ['appypi', 'install',
+                '--requirements=tests/fixtures/requirements.txt']
+    execute()

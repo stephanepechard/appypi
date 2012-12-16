@@ -26,6 +26,20 @@ Unhappily, there is no way to know it before going far
 into the installation process.
 
 
+Install a list of package
+-------------------------
+As with pip, you can use a requirements file to install many packages at once::
+
+    $ appypi install --requirements=requirements.txt
+
+But contrary to pip, you can not specify the version of a package like
+``django==1.4``. You can not install stuff from git or any other VCS as well.
+Maybe one day...
+
+Note that each package will be installed in an independant virtualenv. They
+can't be installed in conjunction in a unique one.
+
+
 Remove a package
 ----------------
 Sad, but true::
@@ -161,7 +175,7 @@ For example, for the `Projy <http://pypi.python.org/pypi/Projy/0.2>`_ package:
 
     Then the substitutes *author* and *date* (defaulted to the current day)
     are defined by the given values, not those computed by Projy.
-    The format of such substitutions should be "key,value". Neither the 
+    The format of such substitutions should be "key,value". Neither the
     key or the value should therefore include a comma.
     Leading and trailing spaces are removed from both key and value.
 
@@ -201,7 +215,7 @@ For example, for the `Projy <http://pypi.python.org/pypi/Projy/0.2>`_ package:
      * a bootstrap file, to manage your virtualenv happiness ;
 
     See the official doc for more details on created files into these
-    templates. Soon to come, more templates around Django. Of course, 
+    templates. Soon to come, more templates around Django. Of course,
     anyone can propose some templates, they'll be integrated into Projy.
 
 
@@ -230,5 +244,4 @@ You guessed right::
 
     $ appypi update
 
-Note that it is done programmatically every 7 days.
-
+Note that this update is forced programmatically every 7 days.
