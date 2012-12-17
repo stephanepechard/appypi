@@ -127,12 +127,14 @@ def test_install_unknown():
 
 
 @raises(SystemExit)
+@with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_empty_install():
     sys.argv = ['appypi', 'install']
     execute()
 
 
 @raises(SystemExit)
+@with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_unknown_command():
     sys.argv = ['appypi', 'NOT_A_COMMAND', 'plop']
     execute()
@@ -145,6 +147,7 @@ def test_update():
 
 
 @raises(SystemExit)
+@with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_unknown_requirement_file():
     sys.argv = ['appypi', 'install', '--requirements=NOT_A_FILE']
     execute()
@@ -152,6 +155,14 @@ def test_unknown_requirement_file():
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_requirement_file():
-    sys.argv = ['appypi', 'install',
-                '--requirements=tests/fixtures/requirements.txt']
+    sys.argv = ['appypi', 'install', '--requirements={0}'.
+    format(os.path.join(os.getcwd(), 'tests/fixtures/requirements-OK.txt'))] 
+    execute()
+
+
+@raises(SystemExit)
+@with_setup(setup_appypi_dir, teardown_appypi_dir)
+def test_requirement_erroneous_file():
+    sys.argv = ['appypi', 'install', '--requirements={0}'.
+    format(os.path.join(os.getcwd(), 'tests/fixtures/requirements-FAIL.txt'))] 
     execute()
