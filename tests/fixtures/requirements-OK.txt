@@ -1,0 +1,4 @@
+Django
+UNKNOWN_PACKAGE_THAT_PROBABLY_DO_NOT_EXIST
+projy
+fabric
