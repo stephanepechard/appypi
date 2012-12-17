@@ -26,6 +26,7 @@ def setup_appypi_dir_models():
 
 @with_setup(setup_appypi_dir_models, teardown_appypi_dir)
 def test_app_is_not_installed():
+    """ An app not installed in the database. """
     db = AppypiDatabase()
     app = Application('application')
     app.add_binfile('binfile')
@@ -35,6 +36,7 @@ def test_app_is_not_installed():
 
 @with_setup(setup_appypi_dir_models, teardown_appypi_dir)
 def test_app_is_installed():
+    """ An app installed in the database. """
     db = AppypiDatabase()
     app = Application('application')
     app.add_binfile('binfile1')
@@ -45,6 +47,7 @@ def test_app_is_installed():
 
 @with_setup(setup_appypi_dir_models, teardown_appypi_dir)
 def test_create_db():
+    """ Creation of the database. """
     db = AppypiDatabase()
     app = Application('application')
     app.add_binfile('binfile1')

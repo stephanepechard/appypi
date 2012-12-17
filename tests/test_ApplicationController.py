@@ -43,7 +43,7 @@ def setup_appypi_dir():
 # tests
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_install():
-    """ Test the install of a package. """
+    """ Install of a package. """
     sys.argv = ['appypi', 'install', 'projy']
     execute()
     bin_path = os.path.join(os.environ['HOME'], 'bin', 'projy')
@@ -54,7 +54,7 @@ def test_install():
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_list_and_show():
-    """ Test the install of a package, then list all installed packages,
+    """ Install of a package, then list all installed packages,
         then show the installed package information. """
     sys.argv = ['appypi', 'install', 'projy']
     execute()
@@ -66,6 +66,7 @@ def test_list_and_show():
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_upgrade_all():
+    """ Upgrade all packages. """
     sys.argv = ['appypi', 'install', 'projy']
     execute()
     sys.argv = ['appypi', 'upgrade']
@@ -74,6 +75,7 @@ def test_upgrade_all():
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_real_upgrade():
+    """ Upgrade of a package. """
     sys.argv = ['appypi', 'install', 'projy']
     execute()
     sys.argv = ['appypi', 'install', 'fabric']
@@ -101,6 +103,7 @@ def test_real_upgrade():
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_upgrade_uninstalled():
+    """ Upgrade an uninstalled package. """
     sys.argv = ['appypi', 'upgrade', 'NOT_INSTALLED_PACKAGE']
     execute()
 
@@ -108,6 +111,7 @@ def test_upgrade_uninstalled():
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_show_unknown():
+    """ Show an uninstalled package. """
     sys.argv = ['appypi', 'show', 'NOT_INSTALLED_PACKAGE']
     execute()
 
@@ -115,6 +119,7 @@ def test_show_unknown():
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_remove_not_installed():
+    """ Remove an uninstalled package. """
     sys.argv = ['appypi', 'remove', 'projy']
     execute()
 
@@ -122,6 +127,7 @@ def test_remove_not_installed():
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_install_unknown():
+    """ Install an uninstalled package. """
     sys.argv = ['appypi', 'install', 'NOT_INSTALLED_PACKAGE']
     execute()
 
@@ -129,6 +135,7 @@ def test_install_unknown():
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_empty_install():
+    """ Install with no package. """
     sys.argv = ['appypi', 'install']
     execute()
 
@@ -136,12 +143,14 @@ def test_empty_install():
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_unknown_command():
+    """ Use an unknown command. """
     sys.argv = ['appypi', 'NOT_A_COMMAND', 'plop']
     execute()
 
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_update():
+    """ Update packages. """
     sys.argv = ['appypi', 'update']
     execute()
 
@@ -149,20 +158,6 @@ def test_update():
 @raises(SystemExit)
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_unknown_requirement_file():
+    """ Show an unknown requirement file. """
     sys.argv = ['appypi', 'install', '--requirements=NOT_A_FILE']
-    execute()
-
-
-@with_setup(setup_appypi_dir, teardown_appypi_dir)
-def test_requirement_file():
-    sys.argv = ['appypi', 'install', '--requirements={0}'.
-    format(os.path.join(os.getcwd(), 'tests/fixtures/requirements-OK.txt'))] 
-    execute()
-
-
-@raises(SystemExit)
-@with_setup(setup_appypi_dir, teardown_appypi_dir)
-def test_requirement_erroneous_file():
-    sys.argv = ['appypi', 'install', '--requirements={0}'.
-    format(os.path.join(os.getcwd(), 'tests/fixtures/requirements-FAIL.txt'))] 
     execute()

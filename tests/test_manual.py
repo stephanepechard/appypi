@@ -25,6 +25,7 @@ from nose.plugins.capture import Capture
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_remove():
+    """ Remove an installed package with confirmation. """
     # install first
     sys.argv = ['appypi', 'install', 'projy']
     execute()
@@ -45,8 +46,25 @@ def test_remove():
 
 @with_setup(setup_appypi_dir, teardown_appypi_dir)
 def test_remove_not_confirmed():
+    """ Remove an installed package without confirmation. """
     sys.argv = ['appypi', 'install', 'projy']
     execute()
     sys.argv = ['appypi', 'remove', 'projy']
     execute()
 
+
+@with_setup(setup_appypi_dir, teardown_appypi_dir)
+def test_requirement_file():
+    """ Install packages from a requirement file. """
+    sys.argv = ['appypi', 'install', '--requirements={0}'.
+    format(os.path.join(os.getcwd(), 'tests/fixtures/requirements-OK.txt'))]
+    execute()
+
+
+@raises(SystemExit)
+@with_setup(setup_appypi_dir, teardown_appypi_dir)
+def test_requirement_erroneous_file():
+    """ Install packages from a requirement file with unknown package. """
+    sys.argv = ['appypi', 'install', '--requirements={0}'.
+    format(os.path.join(os.getcwd(), 'tests/fixtures/requirements-FAIL.txt'))]
+    execute()
