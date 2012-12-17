@@ -56,7 +56,7 @@ def tests():
     local("nosetests -v --with-coverage --cover-package appypi "
           "tests.test_manual:test_requirement_erroneous_file")
 
-    local("coverage html -d /tmp/coverage-appypi --omit='appypi/docopt.py'")
+    local("coverage html -i -d /tmp/coverage-appypi --omit='appypi/docopt.py'")
     local("coverage erase")
 
 
