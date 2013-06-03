@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" Main appypi controller class. """
+""" Main class for a terminal view. """
 
 # system
 from blessings import Terminal

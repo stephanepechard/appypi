@@ -27,15 +27,15 @@ Usual suspects: pip and distribute
 ----------------------------------
 To install appypi for your user only, type::
 
-    $ pip install projy --user
+    $ pip install appypi --user
 
 To install appypi system-wide, just type::
 
-    $ sudo pip install projy
+    $ sudo pip install appypi
 
 If no pip available, try ``easy_install``::
 
-    $ sudo easy_install projy
+    $ sudo easy_install appypi
 
 
 Play the game
