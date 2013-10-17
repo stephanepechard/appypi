@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/stephanepechard/appypi.png)](https://travis-ci.org/stephanepechard/appypi)
 [![Downloads](https://pypip.in/d/appypi/badge.png)](https://crate.io/package/appypi)
 [![PyPI version](https://badge.fury.io/py/appypi.png)](http://badge.fury.io/py/appypi)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stephanepechard/appypi/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 appypi: sandboxing apps from Pypi packages
 ==========================================
